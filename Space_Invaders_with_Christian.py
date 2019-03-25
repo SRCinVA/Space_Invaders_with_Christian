@@ -5,6 +5,7 @@
 import turtle
 import os
 
+
 #Set up screen
 wn = turtle.Screen()
 wn.bgcolor("black")
@@ -35,18 +36,59 @@ player.setheading(90)
 
 playerspeed = 15
 
+#Create the enemy
+enemy = turtle.Turtle()
+enemy.color("red")
+enemy.shape("circle")
+enemy.penup()
+enemy.speed(0)
+enemy.setposition(-200,250)
+
+enemyspeed = 2
+
 #Move the player left and right
 def move_left():
     x = player.xcor()
     x -= playerspeed
+    if x < -280:
+        x = -280
     player.setx(x) #sets x coord to the new x.
+
+
+def move_right():
+    x = player.xcor()
+    x += playerspeed
+    if x > 280:
+        x = 280
+    player.setx(x)  # sets x coord to the new x.
+
 
 
 #Create keyboard bindings
 turtle.listen() #tells turtle to listen
 turtle.onkey(move_left, "Left") #"Left" is the literal left arrow key.
-
+turtle.onkey(move_right, "Right")  # "Right" is the literal left arrow key.
 
 #delay = raw_input("Press enter to play")
+
+#Main game loop
+while True: #you could think of this as "forever"
+    #Move the enemy
+    x = enemy.xcor()
+    x += enemyspeed
+    enemy.setx(x)
+
+    #Move the enemy back and down
+    if enemy.xcor() > 280:
+        y = enemy.ycor()
+        y -= 40 #when hits boundary, moves down
+        enemyspeed *= -1 #to reverse directions
+        enemy.sety(y)
+
+    if enemy.xcor() < -280:
+        y = enemy.ycor()
+        y -= 40  # when hits boundary, moves down
+        enemyspeed *= -1 #to reverse directions
+        enemy.sety(y)
 
 wn.mainloop()
