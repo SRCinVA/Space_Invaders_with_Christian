@@ -46,6 +46,23 @@ enemy.setposition(-200,250)
 
 enemyspeed = 2
 
+#Create the player's bullet
+bullet = turtle.Turtle()
+bullet.color("yellow")
+bullet.shape("triangle")
+bullet.penup()
+bullet.speed(0)
+bullet.setheading(90)
+bullet.shapesize(0.5,0.5) #half the x height and y height
+bullet.hideturtle()
+
+bulletspeed = 20
+
+#Define bullet state
+#ready - ready to fire
+#fire - bullet is firing
+bulletstate = "ready"
+
 #Move the player left and right
 def move_left():
     x = player.xcor()
@@ -62,12 +79,22 @@ def move_right():
         x = 280
     player.setx(x)  # sets x coord to the new x.
 
-
+def fire_bullet():
+    #Declare bulletstate as a global if it is changed
+    global bulletstate
+    if bulletstate == "ready":
+        bulletstate = "fire"
+    #above, so it can operate outside of the function and not just disappear
+        x = player.xcor()
+        y = player.ycor() + 10
+        bullet.setposition(x,y)
+        bullet.showturtle()
 
 #Create keyboard bindings
 turtle.listen() #tells turtle to listen
 turtle.onkey(move_left, "Left") #"Left" is the literal left arrow key.
 turtle.onkey(move_right, "Right")  # "Right" is the literal left arrow key.
+turtle.onkey(fire_bullet, "space")
 
 #delay = raw_input("Press enter to play")
 
@@ -90,5 +117,16 @@ while True: #you could think of this as "forever"
         y -= 40  # when hits boundary, moves down
         enemyspeed *= -1 #to reverse directions
         enemy.sety(y)
+
+    #Move the bullet
+    if bulletstate == "fire":
+        y = bullet.ycor()
+        y += bulletspeed
+        bullet.sety(y)
+
+    #Check to see if bullet has reached top
+    if bullet.ycor() > 275:
+        bullet.hideturtle()
+        bulletstate = "ready"
 
 wn.mainloop()
