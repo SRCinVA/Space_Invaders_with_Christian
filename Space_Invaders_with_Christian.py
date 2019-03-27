@@ -4,7 +4,7 @@
 
 import turtle
 import os
-
+import math
 
 #Set up screen
 wn = turtle.Screen()
@@ -90,6 +90,13 @@ def fire_bullet():
         bullet.setposition(x,y)
         bullet.showturtle()
 
+def isCollision(t1,t2): #isX convention usually tells us it's a Boolean.
+    distance = math.sqrt(math.pow(t1.xcor()-t2.xcor(),2)+math.pow(t1.ycor()-t2.ycor(),2))
+    if distance < 15:
+        return True
+    else:
+        return False
+
 #Create keyboard bindings
 turtle.listen() #tells turtle to listen
 turtle.onkey(move_left, "Left") #"Left" is the literal left arrow key.
@@ -129,4 +136,20 @@ while True: #you could think of this as "forever"
         bullet.hideturtle()
         bulletstate = "ready"
 
+    #Check for collision of bullet and the enemy
+    if isCollision(bullet,enemy):
+        #Reset the bullet
+        bullet.hideturtle()
+        bulletstate = "ready"
+        bullet.setposition(0,-400)
+        #Reset the enemy
+        enemy.setposition(-200,250)
+
+    if isCollision(player,enemy):
+        player.hideturtle()
+        enemy.hideturtle()
+        print("Game Over")
+        break
+
 wn.mainloop()
+    
