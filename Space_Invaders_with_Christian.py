@@ -5,6 +5,7 @@
 import turtle
 import os
 import math
+import random
 
 #Set up screen
 wn = turtle.Screen()
@@ -36,13 +37,26 @@ player.setheading(90)
 
 playerspeed = 15
 
-#Create the enemy
-enemy = turtle.Turtle()
-enemy.color("red")
-enemy.shape("circle")
-enemy.penup()
-enemy.speed(0)
-enemy.setposition(-200,250)
+#Choose number of enemies
+number_of_enemies = 5
+
+#Create an empty list of enemies
+enemies = []
+
+#add enemies to the list
+for i in range(number_of_enemies):
+    #Create the enemy
+    enemies.append(turtle.Turtle()) #appending 5 turtle
+
+for enemy in enemies: #give attributes to that turtle using a list.
+    enemy.color("red")
+    enemy.shape("circle")
+    enemy.penup()
+    enemy.speed(0)
+    x = random.randint(-200,200) #to randomize where the enemies first appear
+    y = random.randint(100,250) # to randomize where the enemies first appear
+
+    enemy.setposition(x,y) # they'll each start at a different spot.
 
 enemyspeed = 2
 
@@ -107,23 +121,47 @@ turtle.onkey(fire_bullet, "space")
 
 #Main game loop
 while True: #you could think of this as "forever"
+    
+    for enemy in enemies: # for all of the enemies now, not just one.
+    
     #Move the enemy
-    x = enemy.xcor()
-    x += enemyspeed
-    enemy.setx(x)
+        x = enemy.xcor()
+        x += enemyspeed
+        enemy.setx(x)
 
-    #Move the enemy back and down
-    if enemy.xcor() > 280:
-        y = enemy.ycor()
-        y -= 40 #when hits boundary, moves down
-        enemyspeed *= -1 #to reverse directions
-        enemy.sety(y)
+        #Move the enemy back and down
+        if enemy.xcor() > 280:
+            y = enemy.ycor()
+            y -= 40 #when hits boundary, moves down
+            enemyspeed *= -1 #to reverse directions
+            enemy.sety(y)
 
-    if enemy.xcor() < -280:
-        y = enemy.ycor()
-        y -= 40  # when hits boundary, moves down
-        enemyspeed *= -1 #to reverse directions
-        enemy.sety(y)
+        if enemy.xcor() < -280:
+            y = enemy.ycor()
+            y -= 40  # when hits boundary, moves down
+            enemyspeed *= -1 #to reverse directions
+            enemy.sety(y)
+
+            #Check for collision of bullet and the enemy
+        if isCollision(bullet, enemy):
+            #Reset the bullet
+            bullet.hideturtle()
+            bulletstate = "ready"
+            bullet.setposition(0, -400)
+            # to randomize where the enemies first appear
+            x = random.randint(-200, 200)
+            y = random.randint(100, 250)  # to randomize where the enemies first appear
+            enemy.setposition(x,y)
+
+
+        if isCollision(player, enemy):
+            player.hideturtle()
+            enemy.hideturtle()
+            print("Game Over")
+            break
+
+#The main loop will go over all of these, 
+#and then check the bullet's status.
 
     #Move the bullet
     if bulletstate == "fire":
@@ -135,21 +173,6 @@ while True: #you could think of this as "forever"
     if bullet.ycor() > 275:
         bullet.hideturtle()
         bulletstate = "ready"
-
-    #Check for collision of bullet and the enemy
-    if isCollision(bullet,enemy):
-        #Reset the bullet
-        bullet.hideturtle()
-        bulletstate = "ready"
-        bullet.setposition(0,-400)
-        #Reset the enemy
-        enemy.setposition(-200,250)
-
-    if isCollision(player,enemy):
-        player.hideturtle()
-        enemy.hideturtle()
-        print("Game Over")
-        break
 
 wn.mainloop()
     
