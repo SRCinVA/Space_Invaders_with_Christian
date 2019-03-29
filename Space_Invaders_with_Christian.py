@@ -131,16 +131,24 @@ while True: #you could think of this as "forever"
 
         #Move the enemy back and down
         if enemy.xcor() > 280:
-            y = enemy.ycor()
-            y -= 40 #when hits boundary, moves down
+            #Moves all enemies down
+            for e in enemies: #already used "enemy"
+                y = e.ycor()
+                y -= 40 #when hits boundary, moves down
+                e.sety(y)
+            #Change enemy direction
             enemyspeed *= -1 #to reverse directions
-            enemy.sety(y)
+                            #above: only need to do speed once, but you probably could put it in that loop.
 
         if enemy.xcor() < -280:
-            y = enemy.ycor()
-            y -= 40  # when hits boundary, moves down
+            for e in enemies:
+                #Moves all enemies down
+                y = e.ycor()
+                y -= 40  # when hits boundary, moves down
+                e.sety(y)
+            #Change enemy direction
             enemyspeed *= -1 #to reverse directions
-            enemy.sety(y)
+            
 
             #Check for collision of bullet and the enemy
         if isCollision(bullet, enemy):
