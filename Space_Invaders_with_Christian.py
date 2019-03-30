@@ -26,6 +26,19 @@ for side in range(4): #to draw a square, starting at (-300,-300)
     border_pen.lt(90)
 border_pen.hideturtle()
 
+#Set score to 0
+score = 0
+
+#Draw score
+score_pen = turtle.Turtle()
+score_pen.speed(0)
+score_pen.color("white")
+score_pen.penup()
+score_pen.setposition(-290,280)
+scorestring = "Score: %s" %score
+score_pen.write(scorestring, False, align="left", font=("Arial", 14, "normal"))
+score_pen.hideturtle()
+
 #Create the player turtle
 player = turtle.Turtle()
 player.color("blue")
@@ -161,6 +174,11 @@ while True: #you could think of this as "forever"
             y = random.randint(100, 250)  # to randomize where the enemies first appear
             enemy.setposition(x,y)
 
+        #update the score
+            score += 10
+            scorestring = "Score: %s" %score
+            score_pen.clear()
+            score_pen.write(scorestring, False, align="left",font=("Arial", 14, "normal"))
 
         if isCollision(player, enemy):
             player.hideturtle()
