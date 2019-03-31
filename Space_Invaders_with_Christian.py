@@ -12,6 +12,9 @@ wn = turtle.Screen()
 wn.bgcolor("black")
 wn.title("Space Invaders")
 
+#Register the shapes
+turtle.register_shape("~/Desktop/Github_files/Space_invaders_with_Christian/enemy.gif")
+
 #Draw border
 border_pen = turtle.Turtle()
 border_pen.speed(0) #oddly, "0" is the fastest
@@ -63,7 +66,7 @@ for i in range(number_of_enemies):
 
 for enemy in enemies: #give attributes to that turtle using a list.
     enemy.color("red")
-    enemy.shape("circle")
+    enemy.shape("~/Desktop/Github_files/Space_invaders_with_Christian/enemy.gif")
     enemy.penup()
     enemy.speed(0)
     x = random.randint(-200,200) #to randomize where the enemies first appear
