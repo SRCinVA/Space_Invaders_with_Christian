@@ -119,6 +119,7 @@ def fire_bullet():
         y = player.ycor() + 10
         bullet.setposition(x,y)
         bullet.showturtle()
+        os.system("afplay whoosh.m4a&")
 
 def isCollision(t1,t2): #isX convention usually tells us it's a Boolean.
     distance = math.sqrt(math.pow(t1.xcor()-t2.xcor(),2)+math.pow(t1.ycor()-t2.ycor(),2))
@@ -168,6 +169,7 @@ while True: #you could think of this as "forever"
 
             #Check for collision of bullet and the enemy
         if isCollision(bullet, enemy):
+            os.system("afplay boom.m4a&")
             #Reset the bullet
             bullet.hideturtle()
             bulletstate = "ready"
@@ -176,6 +178,8 @@ while True: #you could think of this as "forever"
             x = random.randint(-200, 200)
             y = random.randint(100, 250)  # to randomize where the enemies first appear
             enemy.setposition(x,y)
+            os.system("afplay pew.wav.m4a&")
+
 
         #update the score
             score += 10
